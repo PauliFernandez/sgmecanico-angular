@@ -1,0 +1,113 @@
+<div class="row">
+    <h1>Envios <span class="badge badge-secondary"></span></h1>
+</div>
+<!-- <div class="row">
+    <form class="form-inline">
+        <div class="form-group mb-2">
+            <label for="inputPassword2" class="sr-only"></label>
+            <input type="text" class="form-control" id="inputPassword2" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
+    </form>
+</div> -->
+<div class="row">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nro de envio</th>
+                <th scope="col">Nro rectificado</th>
+                <th scope="col">Cliente</th>
+                <th scope="col">Direccion</th>
+                <th scope="col">Transportista</th>
+                <th scope="col">Fecha de despacho/envio</th>
+                <th scope="col">Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let datos of envios ; let i=index;">
+                <td>{{datos.id}}</td>
+                <td>{{datos.cliente.nombre}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<!-- <div class="row justify-content-end">
+    <button class="btn btn-lg btn-default" data-toggle="modal" data-target="#addRectificadoModal" data-whatever="@mdo">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+    </button>
+</div> -->
+<!-- Add modal
+<div class="modal fade" id="addRectificadoModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">New message</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="clienteForm">
+                    <div class="form-group">
+                        <label for="cliente">Cliente</label>
+                        <select class="form-control" id="cliente" formControlName="cliente">
+                            <option [ngValue]="null">Seleccionar un cliente</option>
+                            <option *ngFor="let cli of clientes" [ngValue]="cli">
+                                {{ cli.nombre }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="operario">Operario</label>
+                        <select class="form-control" id="operario" formControlName="operario">
+                            <option [ngValue]="null">Seleccionar un operario</option>
+                            <option *ngFor="let op of operarios" [ngValue]="op">
+                                {{ op.nombre }} {{op.apellido}}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="estado">Estado</label>
+                        <input type="text" class="form-control" id="estado" value="{{ estados[0]?.descripcion }}"
+                            readonly>
+                    </div>
+                    <div class="form-group" *ngFor="let motor of motores.controls; let i=index" formArrayName="motores">
+                        <div [formGroupName]="i">
+                            <label for="nroMotor-{{ i }}">Nro de motor</label>
+                            <input id="nroMotor-{{ i }}" formControlName="nroMotor" type="text" class="form-control"
+                                placeholder="000203AbdcD...">
+
+                            <label for="marca-{{ i }}">Marca</label>
+                            <input id="marca-{{ i }}" formControlName="marca" type="text" class="form-control"
+                                placeholder="marca">
+
+                            <label for="modelo-{{ i }}">Modelo</label>
+                            <input id="modelo-{{ i }}" formControlName="modelo" type="text" class="form-control"
+                                placeholder="modelo">
+
+                            <label for="fabricacion-{{ i }}">Fabricacion</label>
+                            <input id="fabricacion-{{ i }}" formControlName="fabricacion" type="date" class="form-control"
+                                placeholder="fabricacion" >
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <button class="btn btn-lg btn-default">
+                            <i class="fa fa-plus fa-1x" aria-hidden="true" (click)="addMotor()"></i>
+                        </button>
+                    </div>
+                    <input class="form-control" type="text" placeholder="{{curDate | date:'yyyy-MM-dd'}}" readonly>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" (click)="onSubmit()">Confimar</button>
+            </div>
+        </div>
+    </div>
+</div> -->

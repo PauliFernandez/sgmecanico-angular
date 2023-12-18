@@ -1,0 +1,48 @@
+<div class="row">
+    <h1>Pedidos <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+    <form class="form-inline">
+        <div class="form-group mb-2">
+            <label for="inputPassword2" class="sr-only"></label>
+            <input type="text" class="form-control" id="inputPassword2" placeholder="">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
+    </form>
+</div>
+<div class="row">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">*</th>
+                <th scope="col">Proveedor</th>
+                <th scope="col">Fecha</th>
+                <th scope="col">Linea de pedido</th>
+                <th scope="col">Total</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+                <td>
+                    <button class="btn btn-outline-success">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+                    <button class="btn btn-outline-danger ml-3">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row justify-content-end">
+    <button class="btn btn-lg btn-default" (click)="navigateToAltaPedido()">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+    </button>
+</div>

@@ -1,0 +1,321 @@
+<div class="row">
+  <h1>Rectificados <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+  <form class="form-inline">
+    <div class="form-group mb-2">
+      <label for="inputPassword2" class="sr-only"></label>
+      <input
+        type="text"
+        class="form-control"
+        id="inputPassword2"
+        placeholder=""
+      />
+    </div>
+    <button type="submit" class="btn btn-primary mb-2 ml-2">Buscar</button>
+  </form>
+</div>
+<div class="row">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nro de rectificado</th>
+        <th scope="col">Cliente</th>
+        <th scope="col">Operario</th>
+        <th scope="col">Motor/es</th>
+        <th scope="col">Insumos</th>
+        <th scope="col">Fecha Ingreso</th>
+        <th scope="col">Estado</th>
+        <th scope="col">Para envio</th>
+        <th scope="col">Accion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let datos of rectificados; let i = index">
+        <td>{{ datos.id }}</td>
+        <td>{{ datos.cliente.nombre }}</td>
+        <td>{{ datos.operario.nombre }} {{ datos.operario.apellido }}</td>
+        <td>
+          <div *ngFor="let motor of datos.motores; let j = index">
+            {{ motor.marca }}, {{ motor.modelo }}, ({{
+              motor.fabricacion | date : "yyyy"
+            }})
+          </div>
+        </td>
+        <td>
+          <div *ngFor="let pedido of datos.pedidos; let j = index">
+            <div *ngFor="let linea of pedido.lineasDePedido; let j = index">
+              {{ linea.insumo.nombre }} - ({{ pedido.proveedor.nombre }})
+              {{ linea.insumo.precio }} x {{ linea.cantidad }}
+            </div>
+          </div>
+        </td>
+        <td>{{ datos.fecha | date : "yyyy" }}</td>
+        <td>{{ datos.estado.descripcion }}</td>
+        <td style="text-align: center">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="exampleCheck1"
+            [checked]="datos.paraEnvio"
+            disabled
+          />
+        </td>
+
+        <td>
+          <button
+            class="btn btn-outline-success"
+            data-toggle="modal"
+            data-target="#editRectificadoModal"
+            (click)="onEdit(datos)"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+
+          <button
+            class="btn btn-outline-danger ml-3"
+            (click)="onDelete(datos.id)"
+          >
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row justify-content-end">
+  <button
+    class="btn btn-lg btn-default"
+    data-toggle="modal"
+    data-target="#addRectificadoModal"
+    data-whatever="@mdo"
+  >
+    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+  </button>
+</div>
+<!-- Add modal -->
+<div
+  class="modal fade"
+  id="addRectificadoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Agregar rectificado</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="clienteForm">
+          <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <select class="form-control" id="cliente" formControlName="cliente">
+              <option [ngValue]="null">Seleccionar un cliente</option>
+              <option *ngFor="let cli of clientes" [ngValue]="cli">
+                {{ cli.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-check mt-3 mb-3">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="paraEnvio"
+              formControlName="paraEnvio"
+            />
+            <label class="form-check-label" for="paraEnvio">Para envio</label>
+          </div>
+          <div class="form-group">
+            <label for="operario">Operario</label>
+            <select
+              class="form-control"
+              id="operario"
+              formControlName="operario"
+            >
+              <option [ngValue]="null">Seleccionar un operario</option>
+              <option *ngFor="let op of operarios" [ngValue]="op">
+                {{ op.nombre }} {{ op.apellido }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <input
+              type="text"
+              class="form-control"
+              id="estado"
+              value="{{ estados[0]?.descripcion }}"
+              readonly
+            />
+          </div>
+          <div
+            class="form-group"
+            *ngFor="let motor of motores.controls; let i = index"
+            formArrayName="motores"
+          >
+            <div [formGroupName]="i">
+              <label for="nroMotor-{{ i }}">Nro de motor</label>
+              <input
+                id="nroMotor-{{ i }}"
+                formControlName="nroMotor"
+                type="text"
+                class="form-control"
+                placeholder="000203AbdcD..."
+              />
+
+              <label for="marca-{{ i }}">Marca</label>
+              <input
+                id="marca-{{ i }}"
+                formControlName="marca"
+                type="text"
+                class="form-control"
+                placeholder="marca"
+              />
+
+              <label for="modelo-{{ i }}">Modelo</label>
+              <input
+                id="modelo-{{ i }}"
+                formControlName="modelo"
+                type="text"
+                class="form-control"
+                placeholder="modelo"
+              />
+
+              <label for="fabricacion-{{ i }}">Fabricacion</label>
+              <input
+                id="fabricacion-{{ i }}"
+                formControlName="fabricacion"
+                type="date"
+                class="form-control"
+                placeholder="fabricacion"
+              />
+            </div>
+          </div>
+          <div class="row justify-content-end">
+            <button class="btn btn-lg btn-default">
+              <i
+                class="fa fa-plus fa-1x"
+                aria-hidden="true"
+                (click)="addMotor()"
+              ></i>
+            </button>
+          </div>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="{{ curDate | date : 'yyyy-MM-dd' }}"
+            readonly
+          />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          Confimar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Edit modal -->
+<div
+  class="modal fade"
+  id="editRectificadoModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Editar rectificado</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="editForm">
+          <div class="form-group">
+            <label for="cliente">Cliente</label>
+            <select class="form-control" id="cliente" formControlName="cliente">
+              <!-- <option [ngValue]="null">Seleccionar un cliente</option> -->
+              <option *ngFor="let cli of clientes" [ngValue]="cli">
+                {{ cli.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="form-check mt-3 mb-3">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="paraEnvio"
+              formControlName="paraEnvio"
+            />
+            <label class="form-check-label" for="paraEnvio">Para envio</label>
+          </div>
+          <div class="form-group">
+            <label for="operario">Operario</label>
+            <select
+              class="form-control"
+              id="operario"
+              formControlName="operario"
+            >
+              <!-- <option [ngValue]="null">Seleccionar un operario</option> -->
+              <option *ngFor="let op of operarios" [ngValue]="op">
+                {{ op.nombre }} {{ op.apellido }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select class="form-control" id="estado" formControlName="estado">
+              <!-- <option [ngValue]="null">Seleccionar un estado</option> -->
+              <option *ngFor="let est of estados" [ngValue]="est">
+                {{ est.descripcion }}
+              </option>
+            </select>
+          </div>
+          <div *ngFor="let motor of selectedRectificado?.motores; let i = index">
+            <label>
+              {{ motor?.marca }}, {{ motor?.modelo }}, ({{
+                motor?.fabricacion | date : "yyyy"
+              }})
+            </label>
+          </div>
+          <input
+            class="form-control"
+            type="text"
+            placeholder="{{ curDate | date : 'yyyy-MM-dd' }}"
+            readonly
+          />
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancelar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="onSubmit()">
+          Modificar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

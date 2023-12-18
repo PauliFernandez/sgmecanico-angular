@@ -1,0 +1,49 @@
+<div class="row">
+    <h1>Modulo operarios <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Nro de recitificado</th>
+                <th scope="col">Motor/es</th>
+                <th scope="col">Insumos</th>
+                <th scope="col">Fecha Ingreso</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let datos of rectificados ; let i=index;">
+                <td>{{datos.id}}</td>
+                <td>
+                    <div *ngFor="let motor of datos.motores; let j=index;">
+                        {{ motor.nroMotorId }} - {{ motor.marca }}, {{ motor.modelo }}, ({{ motor.fabricacion | date : "yyyy"}})
+                    </div>
+                </td>
+                <td>
+                    <div *ngFor="let pedido of datos.pedidos; let j=index;">
+                        <div *ngFor="let linea of pedido.lineasDePedido; let j=index;">
+                            {{linea.insumo.nombre}} - ({{pedido.proveedor.nombre}})
+                            {{ linea.insumo.precio }} x {{linea.cantidad}}
+                        </div>
+                    </div>
+                </td>
+                <td>{{datos.fecha | date : "yyyy-MM-dd"}}</td>
+                <td>{{datos.estado.descripcion}}</td>
+                <td>
+                    <div class="col-md-3">
+                        <!-- <a [routerLink]="['updateMotor']">
+                            <button class="btn btn-outline-warning">
+                                <i class="fa fa-wrench" aria-hidden="true"></i>
+                            </button>
+                        </a> -->
+                        <button class="btn btn-outline-warning" (click)="navigateToUpdateMotor()">
+                            <i class="fa fa-wrench" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

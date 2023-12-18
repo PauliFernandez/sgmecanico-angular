@@ -1,0 +1,56 @@
+<div class="row">
+    <h1>Agregar Pedido <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+    <h4>Pedido Nro <span class="badge badge-secondary">234</span></h4>
+</div>
+<div class="row mt-3">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text" for="inputGroupSelect01">23/08/2023</label>
+        </div>
+        <select class="custom-select" id="inputGroupSelect01">
+            <option selected>Proveedor...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+        </select>
+    </div>
+</div>
+<div class="row mt-4">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">*</th>
+                <th scope="col">Insumo</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Subtotal</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row">1</th>
+                <td>Piston</td>
+                <td>2</td>
+                <td>200$</td>
+                <td>
+                    <button class="btn btn-default ml-3">
+                        <i class="fa fa-minus" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="alert alert-success" role="alert" style="text-align: end;">
+            <h5>Total: $</h5>
+        </div>
+    </div>
+</div>
+<div class="row mt-3 justify-content-between">
+    <button type="button" class="btn btn-danger btn-lg">Cancelar</button>
+    <button type="button" class="btn btn-primary btn-lg">Guardar</button>
+</div>

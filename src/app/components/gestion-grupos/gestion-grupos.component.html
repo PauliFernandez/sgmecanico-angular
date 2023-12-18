@@ -1,0 +1,37 @@
+<div class="row">
+    <h1>Grupos <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Codigo</th>
+                <th scope="col">Descripcion</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let datos of grupos ; let i=index;">
+                <td>{{datos.id}}</td>
+                <td>{{datos.cliente.nombre}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>
+
+                    <button class="btn btn-outline-success">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn btn-outline-danger ml-3">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row justify-content-end">
+    <button class="btn btn-lg btn-default" data-toggle="modal" data-target="#addRectificadoModal" data-whatever="@mdo">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+    </button>
+</div>

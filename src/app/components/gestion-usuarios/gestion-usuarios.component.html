@@ -1,0 +1,96 @@
+<div class="row">
+    <h1>Usuarios <span class="badge badge-secondary"></span></h1>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label for="usuario">Usuario</label>
+                <input type="text" class="form-control" id="usuario">
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" class="form-control" id="nombre">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email">
+            </div>
+        </form>
+    </div>
+    <div class="col-md-8">
+        <label>Roles:</label>
+        <div class="table-wrapper-scroll-y my-custom-scrollbar mt-3">
+            <table class="table table-bordered table-hover ">
+                <thead>
+                    <tr>
+                        <th scope="col">Activo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Descripcion</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="text-align: center;"><input type="checkbox" class="form-check-input"
+                                id="exampleCheck1"></td>
+                        <td>Admin</td>
+                        <td>Full access</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;"><input type="checkbox" class="form-check-input"
+                                id="exampleCheck1"></td>
+                        <td>Operario</td>
+                        <td>Modulo operario</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <div class="row">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Agregar</button>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-warning">Modificar</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8" style="text-align: end;">
+        <button type="submit" class="btn btn-secondary">Cancelar</button>
+    </div>
+</div>
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-3">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Username</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Email</th>
+                <th scope="col">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let datos of usuarios ; let i=index;">
+                <td>{{datos.id}}</td>
+                <td>{{datos.cliente.nombre}}</td>
+                <td>{{datos.operario.nombre}} {{datos.operario.apellido}}</td>
+                <td>
+                    <button class="btn btn-outline-success">
+                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                    </button>
+
+                    <button class="btn btn-outline-danger ml-3">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
