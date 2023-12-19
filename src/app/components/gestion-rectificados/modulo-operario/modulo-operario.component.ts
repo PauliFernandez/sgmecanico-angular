@@ -15,6 +15,7 @@ export class ModuloOperarioComponent {
   operarios: any[] = [];
   operarioForm!: FormGroup;
   @ViewChild('addOperarioModal') addOperarioModal!: ElementRef;
+  isEditing: boolean = false;
 
   constructor(private rectificadosService: RectificadosService, private fb: FormBuilder,
     private datePipe: DatePipe) { }
@@ -38,13 +39,20 @@ export class ModuloOperarioComponent {
     });
   }
 
-  editOperario() {
-
+  // Patch values of selected operario
+  selectedOperario(operario: any) {
+    this.isEditing = true;
+    this.operarioForm.patchValue({
+      nombre: operario.nombre,
+      apellido: operario.apellido,
+      dni: operario.dni,
+      fechaIngreso: operario.fecha,
+    });
   }
 
   addOperario(body: any) {
     try {
-      this.rectificadosService.addRectificado(body).subscribe({
+      this.rectificadosService.addOperario(body).subscribe({
         next: (response) => {
           this.operarioForm.reset();
           this.closeModal();
@@ -58,7 +66,7 @@ export class ModuloOperarioComponent {
   }
   deleteOperario(id: number) {
     try {
-      this.rectificadosService.deleteOpeario(id).subscribe({
+      this.rectificadosService.deleteOperario(id).subscribe({
         next: (response) => {
           this.getOperariosList();
         },
@@ -93,8 +101,27 @@ export class ModuloOperarioComponent {
       dni: this.operarioForm.value.dni,
       fecha: this.operarioForm.value.fechaIngreso,
     };
-    this.addOperario(body);
-    this.closeModal();
+    if (this.isEditing) {
+      this.isEditing = false;
+      this.editOperario(body);
+    } else {
+      this.addOperario(body);
+    }
+  }
+
+  editOperario(body: any) {
+    try {
+      this.rectificadosService.addRectificado(body).subscribe({
+        next: (response) => {
+          this.operarioForm.reset();
+          this.closeModal();
+          this.getOperariosList();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    } catch (error) { }
   }
 
 

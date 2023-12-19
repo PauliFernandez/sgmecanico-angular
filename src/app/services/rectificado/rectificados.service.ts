@@ -64,8 +64,16 @@ export class RectificadosService {
       })
     );
   }
-  deleteOpeario(id: any): Observable<any> {
-    return this.apiService.delete(id).pipe(
+  addOperario(body: any): Observable<any> {
+    return this.apiService.addOperarios(body).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return of();
+      })
+    );
+  }
+  deleteOperario(id: any): Observable<any> {
+    return this.apiService.deleteOperarios(id).pipe(
       catchError((error) => {
         console.error('Error:', error);
         return of();
