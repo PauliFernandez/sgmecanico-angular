@@ -5,40 +5,29 @@
     <table class="table">
         <thead class="thead-dark">
             <tr>
-                <th scope="col">Nro de recitificado</th>
-                <th scope="col">Motor/es</th>
-                <th scope="col">Insumos</th>
-                <th scope="col">Fecha Ingreso</th>
-                <th scope="col">Estado</th>
+                <th scope="col">Nro de operario</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Dni</th>
+                <th scope="col">Fecha de ingreso</th>
                 <th scope="col">Accion</th>
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let datos of rectificados ; let i=index;">
-                <td>{{datos.id}}</td>
-                <td>
-                    <div *ngFor="let motor of datos.motores; let j=index;">
-                        {{ motor.nroMotorId }} - {{ motor.marca }}, {{ motor.modelo }}, ({{ motor.fabricacion | date : "yyyy"}})
-                    </div>
-                </td>
-                <td>
-                    <div *ngFor="let pedido of datos.pedidos; let j=index;">
-                        <div *ngFor="let linea of pedido.lineasDePedido; let j=index;">
-                            {{linea.insumo.nombre}} - ({{pedido.proveedor.nombre}})
-                            {{ linea.insumo.precio }} x {{linea.cantidad}}
-                        </div>
-                    </div>
-                </td>
-                <td>{{datos.fecha | date : "yyyy-MM-dd"}}</td>
-                <td>{{datos.estado.descripcion}}</td>
+            <tr *ngFor="let operario of operarios ; let i=index;">
+                <td>{{operario.id}}</td>
+                <td>{{operario.nombre}}</td>
+                <td>{{operario.apellido}}</td>
+                <td>{{operario.dni}}</td>
+                <td>{{operario.fecha | date : "yyyy-MM-dd"}}</td>
                 <td>
                     <div class="col-md-3">
-                        <!-- <a [routerLink]="['updateMotor']">
-                            <button class="btn btn-outline-warning">
-                                <i class="fa fa-wrench" aria-hidden="true"></i>
-                            </button>
-                        </a> -->
-                        <button class="btn btn-outline-warning" (click)="navigateToUpdateMotor()">
+                        <button class="btn btn-outline-warning" (click)="editOperario()">
+                            <i class="fa fa-wrench" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-outline-warning" (click)="deleteOperario()">
                             <i class="fa fa-wrench" aria-hidden="true"></i>
                         </button>
                     </div>
@@ -46,4 +35,61 @@
             </tr>
         </tbody>
     </table>
+</div>
+<div class="row justify-content-end">
+    <button class="btn btn-lg btn-default" data-toggle="modal" data-target="#addOperarioModal" data-whatever="@mdo">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+    </button>
+</div>
+
+<!-- Add modal -->
+<div class="modal fade"  #addOperarioModal id="addOperarioModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Agregar Operario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="operarioForm">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" formControlName="nombre" />
+                        <div *ngIf="operarioForm.get('nombre')?.touched && operarioForm.get('nombre')?.invalid">
+                            <small class="text-danger">El nombre es requerido</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" class="form-control" id="apellido" formControlName="apellido" />
+                        <div *ngIf="operarioForm.get('apellido')?.touched && operarioForm.get('apellido')?.invalid">
+                            <small class="text-danger">El apellido es requerido</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="dni">Dni</label>
+                        <input type="text" class="form-control" id="dni" formControlName="dni" />
+                        <div *ngIf="operarioForm.get('apellido')?.touched && operarioForm.get('apellido')?.invalid">
+                            <small class="text-danger">El dni es requerido</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" class="form-control" id="fecha" formControlName="fechaIngreso" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Cancelar
+                </button>
+                <button type="button" class="btn btn-primary" [disabled]="!operarioForm.valid" (click)="onSubmit()">
+                    Confimar
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
