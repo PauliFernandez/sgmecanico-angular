@@ -11,6 +11,7 @@
               id="user"
               name="user"
               formControlName="user"
+              placeholder="[Debe ser un correo]"
             />
           </div>
           <div class="form-group">
@@ -21,6 +22,7 @@
               id="password"
               name="password"
               formControlName="password"
+              placeholder="[Mínimo 6 caracteres]"
             />
           </div>
           <div class="row mt-3">
@@ -29,17 +31,16 @@
               type="submit"
               class="btn btn-primary btn-lg btn-block"
             >
-              Ingresar
+              Registrar
             </button>
           </div>
-
           <div class="row mt-3">
             <button
               type="button"
               class="btn btn-light btn-lg btn-block"
-              (click)="onRegistrarClick()"
+              (click)="onVolverClick()"
             >
-              ¿No tienes usuario? Registrar
+              Volver
             </button>
           </div>
         </form>

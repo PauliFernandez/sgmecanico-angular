@@ -1,12 +1,9 @@
 import { DatePipe } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Rectificado } from 'src/app/models/rectificado.model';
-import { ApiService } from 'src/app/services/api/api.service';
 import { RectificadosService } from 'src/app/services/rectificado/rectificados.service';
-import * as $ from 'jquery';
 
 @Component({
   selector: 'app-rectificado',
@@ -25,7 +22,6 @@ export class RectificadoComponent {
 
   constructor(
     private rectificadosService: RectificadosService,
-    private route: ActivatedRoute,
     private fb: FormBuilder,
     private datePipe: DatePipe,
     private modalService: NgbModal
@@ -165,7 +161,6 @@ export class RectificadoComponent {
 
   addMotor() {
     if (this.motores.length < 3) {
-      // this.motores.push(this.fb.control(''));
       this.motores.push(
         this.fb.group({
           nroMotor: [''],

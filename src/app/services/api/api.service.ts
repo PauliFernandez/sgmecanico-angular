@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpService } from '../common/http.service';
 import { Observable } from 'rxjs';
-import { List } from 'lodash';
 import { Rectificado } from 'src/app/models/rectificado.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
-
-  constructor(private httpService: HttpService) { }
+  constructor(private httpService: HttpService) {}
 
   getAll(): Observable<Rectificado[]> {
     return this.httpService.get('Rectificados');
@@ -19,7 +17,7 @@ export class ApiService {
   }
   delete(id: any): Observable<any> {
     return this.httpService.delete(`Rectificados/${id}`);
-}
+  }
   //Clientes
   getClientes(): Observable<[]> {
     return this.httpService.get('Clientes');
