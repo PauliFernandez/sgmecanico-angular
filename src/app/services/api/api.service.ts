@@ -26,6 +26,12 @@ export class ApiService {
   getOperarios(): Observable<[]> {
     return this.httpService.get('Operarios');
   }
+  addOperarios(body: any): Observable<Rectificado> {
+    return this.httpService.post('Operarios', body);
+  }
+  deleteOperarios(id: any): Observable<any> {
+    return this.httpService.delete(`Operarios/${id}`);
+  }
   //Estados
   getEstados(): Observable<[]> {
     return this.httpService.get('Estados');

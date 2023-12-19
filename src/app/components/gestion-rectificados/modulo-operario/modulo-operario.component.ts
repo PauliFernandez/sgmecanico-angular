@@ -1,4 +1,3 @@
-import { DatePipe } from '@angular/common';
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
   FormBuilder,
@@ -6,9 +5,6 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Rectificado } from 'src/app/models/rectificado.model';
 import { RectificadosService } from 'src/app/services/rectificado/rectificados.service';
 
 @Component({
@@ -20,11 +16,11 @@ export class ModuloOperarioComponent {
   operarios: any[] = [];
   operarioForm!: FormGroup;
   @ViewChild('addOperarioModal') addOperarioModal!: ElementRef;
+  isEditing: boolean = false;
 
   constructor(
     private rectificadosService: RectificadosService,
-    private fb: FormBuilder,
-    private datePipe: DatePipe
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
@@ -46,12 +42,21 @@ export class ModuloOperarioComponent {
     });
   }
 
-  editOperario() {}
+  // Patch values of selected operario
+  selectedOperario(operario: any) {
+    this.isEditing = true;
+    this.operarioForm.patchValue({
+      nombre: operario.nombre,
+      apellido: operario.apellido,
+      dni: operario.dni,
+      fechaIngreso: operario.fecha,
+    });
+  }
 
   addOperario(body: any) {
     try {
-      this.rectificadosService.addRectificado(body).subscribe({
-        next: () => {
+      this.rectificadosService.addOperario(body).subscribe({
+        next: (response) => {
           this.operarioForm.reset();
           this.closeModal();
           this.getOperariosList();
@@ -59,7 +64,19 @@ export class ModuloOperarioComponent {
       });
     } catch (error) {}
   }
-  deleteOperario() {}
+
+  deleteOperario(id: number) {
+    try {
+      this.rectificadosService.deleteOperario(id).subscribe({
+        next: (response) => {
+          this.getOperariosList();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    } catch (error) {}
+  }
 
   getOperariosList() {
     try {
@@ -78,8 +95,27 @@ export class ModuloOperarioComponent {
       dni: this.operarioForm.value.dni,
       fecha: this.operarioForm.value.fechaIngreso,
     };
-    this.addOperario(body);
-    this.closeModal();
+    if (this.isEditing) {
+      this.isEditing = false;
+      this.editOperario(body);
+    } else {
+      this.addOperario(body);
+    }
+  }
+
+  editOperario(body: any) {
+    try {
+      this.rectificadosService.addRectificado(body).subscribe({
+        next: () => {
+          this.operarioForm.reset();
+          this.closeModal();
+          this.getOperariosList();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    } catch (error) {}
   }
 
   closeModal() {
