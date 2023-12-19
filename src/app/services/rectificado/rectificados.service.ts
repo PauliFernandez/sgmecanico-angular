@@ -37,7 +37,7 @@ export class RectificadosService {
       })
     );
   }
-   // Clientes
+  // Clientes
   getAllClientes(): Observable<Rectificado[]> {
     return this.apiService.getClientes().pipe(
       catchError((error) => {
@@ -46,7 +46,7 @@ export class RectificadosService {
       })
     );
   }
-   // Estados
+  // Estados
   getAllEstados(): Observable<Rectificado[]> {
     return this.apiService.getEstados().pipe(
       catchError((error) => {
@@ -61,6 +61,14 @@ export class RectificadosService {
       catchError((error) => {
         console.error('Error:', error);
         return of([]);
+      })
+    );
+  }
+  deleteOpeario(id: any): Observable<any> {
+    return this.apiService.delete(id).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return of();
       })
     );
   }

@@ -16,7 +16,7 @@ export class ModuloOperarioComponent {
   operarioForm!: FormGroup;
   @ViewChild('addOperarioModal') addOperarioModal!: ElementRef;
 
-  constructor( private rectificadosService: RectificadosService, private fb: FormBuilder,
+  constructor(private rectificadosService: RectificadosService, private fb: FormBuilder,
     private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -56,8 +56,17 @@ export class ModuloOperarioComponent {
       });
     } catch (error) { }
   }
-  deleteOperario() {
-
+  deleteOperario(id: number) {
+    try {
+      this.rectificadosService.deleteOpeario(id).subscribe({
+        next: (response) => {
+          this.getOperariosList();
+        },
+        error: (error) => {
+          console.log(error);
+        },
+      });
+    } catch (error) { }
   }
 
   getOperariosList() {
