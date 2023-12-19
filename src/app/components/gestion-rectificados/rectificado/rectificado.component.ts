@@ -131,8 +131,6 @@ export class RectificadoComponent {
       );
     }
 
-    console.log(this.clienteForm.value.motores);
-
     var body = {
       clienteID: this.clienteForm.value.cliente.id,
       operarioID: this.clienteForm.value.operario.id,
@@ -142,14 +140,10 @@ export class RectificadoComponent {
 
     try {
       this.rectificadosService.addRectificado(body).subscribe({
-        next: (response) => {
-          console.log(response);
+        next: () => {
           this.clienteForm.reset();
           this.closeModal();
           this.getRectificadosList();
-        },
-        error: (error) => {
-          console.log(error);
         },
       });
     } catch (error) {}
@@ -175,12 +169,8 @@ export class RectificadoComponent {
   onDelete(id: number) {
     try {
       this.rectificadosService.deleteRectificado(id).subscribe({
-        next: (response) => {
-          console.log(response);
+        next: () => {
           this.getRectificadosList();
-        },
-        error: (error) => {
-          console.log(error);
         },
       });
     } catch (error) {}

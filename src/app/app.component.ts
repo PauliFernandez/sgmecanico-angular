@@ -12,7 +12,6 @@ export class AppComponent {
   loggedIn: boolean = false;
 
   constructor(private router: Router, private afAuth: AngularFireAuth) {
-    console.log('auth token id', this.afAuth.idToken);
     this.afAuth.onAuthStateChanged((user) => {
       if (user) {
         user.getIdToken().then((value) => {

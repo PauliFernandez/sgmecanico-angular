@@ -1,6 +1,27 @@
 <div class="row">
   <div class="col-md-6 offset-md-3">
-    <div class="card">
+    <div
+      [ngClass]="{
+        'btn-success': alertSuccess === true,
+        'btn-danger': alertSuccess === false
+      }"
+      class="alert mb-3"
+      *ngIf="!!alertMessage"
+      role="alert"
+    >
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        (click)="onCerrarAlertaClick()"
+      >
+        <span aria-hidden="true">&times; </span
+        ><span class="sr-only">Close</span>
+      </button>
+      <h4 class="alert-heading">{{ alertTitle }}</h4>
+      <p>{{ alertMessage }}</p>
+    </div>
+    <div class="card" *ngIf="!alertSuccess">
       <div class="card-body">
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="form-group">

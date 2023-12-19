@@ -10,6 +10,9 @@ import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 })
 export class RegistrarComponent {
   form: FormGroup;
+  alertMessage: string = '';
+  alertTitle: string = 'Error al registrar';
+  alertSuccess: boolean = false;
 
   constructor(private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -33,22 +36,31 @@ export class RegistrarComponent {
     createUserWithEmailAndPassword(auth, formValues.user, formValues.password)
       .then(() => {
         // Usuario registrado
-        alert('Se ha registrado exitosamente.');
-        this.router.navigate(['login']);
+        this.alertSuccess = true;
+        this.alertTitle = 'Registro exitoso';
+        this.alertMessage = 'Se ha registrado exitosamente.';
       })
       .catch((error) => {
-        // Error al registrar
-        const errorCode = error.code;
-        const errorMessage = error.message;
+        this.alertSuccess = false;
+        this.alertTitle = 'Error al registrar';
 
-        console.log(errorCode, errorMessage);
-        alert(
-          'Ha ocurrido un error al intentar registrar el usuario. Reintente mas tarde o comuniquese con el administrador.'
-        );
+        if (error.code === 'auth/email-already-in-use') {
+          this.alertMessage = 'El correo ingresado ya se encuentra registrado.';
+          return;
+        }
+        this.alertMessage =
+          'Ha ocurrido un error al intentar registrar el usuario. Reintente mas tarde o comuniquese con el administrador.';
       });
   }
 
   onVolverClick(): void {
     this.router.navigate(['login']);
+  }
+
+  onCerrarAlertaClick(): void {
+    this.alertMessage = '';
+    if (this.alertSuccess) {
+      this.router.navigate(['login']);
+    }
   }
 }

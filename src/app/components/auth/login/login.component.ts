@@ -10,6 +10,7 @@ import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 })
 export class LoginComponent {
   form: FormGroup;
+  errorMessage: string = '';
 
   constructor(private router: Router, private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -46,19 +47,21 @@ export class LoginComponent {
 
         if (errorCode === 'auth/invalid-credential') {
           // Usuario o password ingresado no valido.
-          alert(
-            'El usuario o la contraseña ingresada es incorrecta. Intente nuevamente.'
-          );
+          this.errorMessage =
+            'El usuario o la contraseña ingresada es incorrecta. Intente nuevamente.';
           return;
         }
 
-        alert(
-          'Ha ocurrido un error al intentar autenticar el usuario. Reintente mas tarde o comuniquese con el administrador.'
-        );
+        this.errorMessage =
+          'Ha ocurrido un error al intentar autenticar el usuario. Reintente mas tarde o comuniquese con el administrador.';
       });
   }
 
   onRegistrarClick(): void {
     this.router.navigate(['registrar']);
+  }
+
+  onCerrarAlertaClick(): void {
+    this.errorMessage = '';
   }
 }
