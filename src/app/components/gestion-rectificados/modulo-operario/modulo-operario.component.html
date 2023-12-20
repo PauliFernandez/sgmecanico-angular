@@ -1,96 +1,158 @@
 <div class="row">
-    <h1>Modulo operarios <span class="badge badge-secondary"></span></h1>
+  <h1>Modulo operarios <span class="badge badge-secondary"></span></h1>
 </div>
 <div class="row">
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Nro de operario</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Apellido</th>
-                <th scope="col">Dni</th>
-                <th scope="col">Fecha de ingreso</th>
-                <th scope="col">Accion</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let operario of operarios ; let i=index;">
-                <td>{{operario.id}}</td>
-                <td>{{operario.nombre}}</td>
-                <td>{{operario.apellido}}</td>
-                <td>{{operario.dni}}</td>
-                <td>{{operario.fecha | date : "yyyy-MM-dd"}}</td>
-                <td>
-                    <div class="col-md-3">
-                        <button class="btn btn-outline-warning" (click)="editOperario(operario)">
-                            <i class="fa fa-wrench" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="col-md-3">
-
-                        <button class="btn btn-outline-danger ml-3" (click)="deleteOperario(operario.id)">
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Nro de operario</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Dni</th>
+        <th scope="col">Fecha de ingreso</th>
+        <th scope="col">Accion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let operario of operarios; let i = index">
+        <td>{{ operario.id }}</td>
+        <td>{{ operario.nombre }}</td>
+        <td>{{ operario.apellido }}</td>
+        <td>{{ operario.dni }}</td>
+        <td>{{ operario.fecha | date : "yyyy-MM-dd" }}</td>
+        <td>
+          <div class="col-md-3">
+            <button
+              class="btn btn-outline-warning"
+              (click)="editOperario(operario)"
+            >
+              <i class="fa fa-wrench" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="col-md-3">
+            <button
+              class="btn btn-outline-danger ml-3"
+              (click)="deleteOperario(operario.id)"
+            >
+              <i class="fa fa-trash" aria-hidden="true"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 <div class="row justify-content-end">
-    <button class="btn btn-lg btn-default" data-toggle="modal" data-target="#addOperarioModal" data-whatever="@mdo">
-        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-    </button>
+  <button
+    class="btn btn-lg btn-default"
+    data-toggle="modal"
+    data-target="#addOperarioModal"
+    data-whatever="@mdo"
+  >
+    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+  </button>
 </div>
 
 <!-- Add modal -->
-<div class="modal fade" #addOperarioModal id="addOperarioModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Agregar Operario</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+<div
+  class="modal fade"
+  #addOperarioModal
+  id="addOperarioModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalLabel">Agregar Operario</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="operarioForm">
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input
+              type="text"
+              class="form-control"
+              id="nombre"
+              formControlName="nombre"
+            />
+            <div
+              *ngIf="
+                operarioForm.get('nombre')?.touched &&
+                operarioForm.get('nombre')?.invalid
+              "
+            >
+              <small class="text-danger">El nombre es requerido</small>
             </div>
-            <div class="modal-body">
-                <form [formGroup]="operarioForm">
-                    <div class="form-group">
-                        <label for="nombre">Nombre</label>
-                        <input type="text" class="form-control" id="nombre" formControlName="nombre" />
-                        <div *ngIf="operarioForm.get('nombre')?.touched && operarioForm.get('nombre')?.invalid">
-                            <small class="text-danger">El nombre es requerido</small>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="apellido">Apellido</label>
-                        <input type="text" class="form-control" id="apellido" formControlName="apellido" />
-                        <div *ngIf="operarioForm.get('apellido')?.touched && operarioForm.get('apellido')?.invalid">
-                            <small class="text-danger">El apellido es requerido</small>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="dni">Dni</label>
-                        <input type="text" class="form-control" id="dni" formControlName="dni" />
-                        <div *ngIf="operarioForm.get('apellido')?.touched && operarioForm.get('apellido')?.invalid">
-                            <small class="text-danger">El dni es requerido</small>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="fecha">Fecha</label>
-                        <input type="date" class="form-control" id="fecha" formControlName="fechaIngreso" />
-                    </div>
-                </form>
+          </div>
+          <div class="form-group">
+            <label for="apellido">Apellido</label>
+            <input
+              type="text"
+              class="form-control"
+              id="apellido"
+              formControlName="apellido"
+            />
+            <div
+              *ngIf="
+                operarioForm.get('apellido')?.touched &&
+                operarioForm.get('apellido')?.invalid
+              "
+            >
+              <small class="text-danger">El apellido es requerido</small>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                    Cancelar
-                </button>
-                <button type="button" class="btn btn-primary" [disabled]="!operarioForm.valid" (click)="onSubmit()">
-                    Confimar
-                </button>
+          </div>
+          <div class="form-group">
+            <label for="dni">Dni</label>
+            <input
+              type="text"
+              class="form-control"
+              id="dni"
+              formControlName="dni"
+            />
+            <div
+              *ngIf="
+                operarioForm.get('apellido')?.touched &&
+                operarioForm.get('apellido')?.invalid
+              "
+            >
+              <small class="text-danger">El dni es requerido</small>
             </div>
-        </div>
+          </div>
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input
+              type="date"
+              class="form-control"
+              id="fecha"
+              formControlName="fechaIngreso"
+            />
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          [disabled]="!operarioForm.valid"
+          (click)="onSubmit()"
+        >
+          Confimar
+        </button>
+      </div>
     </div>
+  </div>
 </div>

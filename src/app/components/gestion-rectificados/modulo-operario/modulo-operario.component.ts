@@ -56,7 +56,7 @@ export class ModuloOperarioComponent {
   addOperario(body: any) {
     try {
       this.rectificadosService.addOperario(body).subscribe({
-        next: (response) => {
+        next: () => {
           this.operarioForm.reset();
           this.closeModal();
           this.getOperariosList();
@@ -90,10 +90,10 @@ export class ModuloOperarioComponent {
 
   onSubmit() {
     var body = {
-      nombre: this.operarioForm.value.nombre,
-      apellido: this.operarioForm.value.apellido,
-      dni: this.operarioForm.value.dni,
-      fecha: this.operarioForm.value.fechaIngreso,
+      Nombre: this.operarioForm.value.nombre,
+      Apellido: this.operarioForm.value.apellido,
+      Dni: this.operarioForm.value.dni,
+      Fecha: this.operarioForm.value.fechaIngreso,
     };
     if (this.isEditing) {
       this.isEditing = false;
