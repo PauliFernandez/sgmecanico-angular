@@ -1,8 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidationErrors,
   Validators,
 } from '@angular/forms';
 import { RectificadosService } from 'src/app/services/rectificado/rectificados.service';
@@ -38,9 +40,17 @@ export class ModuloOperarioComponent {
         Validators.minLength(8),
         Validators.maxLength(9),
         Validators.pattern(/^\d+$/),
+        this.customDniValidator.bind(this),
       ]),
       fechaIngreso: new FormControl(null, Validators.required),
     });
+  }
+
+  customDniValidator(control: AbstractControl): ValidationErrors | null {
+    const dniExists = this.operarios.some(
+      (operario) => control.value === operario.dni
+    );
+    return dniExists ? { dniTaken: true } : null;
   }
 
   // Patch values of selected operario

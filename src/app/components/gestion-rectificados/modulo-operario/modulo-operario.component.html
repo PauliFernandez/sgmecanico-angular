@@ -122,10 +122,15 @@
             />
             <div
               *ngIf="
-                operarioForm.get('apellido')?.touched &&
-                operarioForm.get('apellido')?.invalid
+                operarioForm.get('dni')?.touched &&
+                operarioForm.get('dni')?.invalid
               "
             >
+              <small
+                class="text-danger"
+                *ngIf="operarioForm.get('dni')?.errors?.['dniTaken']"
+                >Este DNI ya ha sido registrado.</small
+              >
               <small class="text-danger">El dni es requerido</small>
             </div>
           </div>
