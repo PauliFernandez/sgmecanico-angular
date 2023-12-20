@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormArray } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Rectificado } from 'src/app/models/rectificado.model';
@@ -19,13 +19,15 @@ export class RectificadoComponent {
   editForm!: FormGroup;
   curDate = new Date();
   selectedRectificado: any;
+  @ViewChild('addRectificadoModal') addRectificadoModal!: ElementRef;
+  @ViewChild('editRectificadoModal') editRectificadoModal!: ElementRef;
+
 
   constructor(
     private rectificadosService: RectificadosService,
     private fb: FormBuilder,
     private datePipe: DatePipe,
-    private modalService: NgbModal
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.getRectificadosList();
@@ -35,14 +37,23 @@ export class RectificadoComponent {
     this.initForm();
   }
 
-  // Function to open the modal
-  openModal() {
-    this.modalService.open('addRectificadoModal', { centered: true }); // 'addRectificadoModal' is the modal ID
-  }
 
-  // Function to close the modal
-  closeModal() {
-    this.modalService.dismissAll(); // Close all open modals
+  closeModal(edits: boolean) {
+    let modalElement;
+    if (edits) {
+      modalElement = this.editRectificadoModal.nativeElement;
+    } else {
+      modalElement = this.addRectificadoModal.nativeElement;
+    }
+    modalElement.classList.remove('show');
+    modalElement.setAttribute('aria-hidden', 'true');
+    modalElement.style.display = 'none';
+
+    const modalBackdrop = document.querySelector('.modal-backdrop');
+    if (modalBackdrop && modalBackdrop.parentNode) {
+      modalBackdrop.parentNode.removeChild(modalBackdrop);
+    }
+
   }
 
   initForm() {
@@ -83,9 +94,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.rectificados = response;
         },
-        error: (error) => {},
+        error: (error) => { },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
   getClientesList() {
     try {
@@ -93,9 +104,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.clientes = response;
         },
-        error: (error) => {},
+        error: (error) => { },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
   getOperariosList() {
     try {
@@ -103,9 +114,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.operarios = response;
         },
-        error: (error) => {},
+        error: (error) => { },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
   getEstadosList() {
     try {
@@ -113,12 +124,11 @@ export class RectificadoComponent {
         next: (response) => {
           this.estados = response;
         },
-        error: (error) => {},
+        error: (error) => { },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
   onSubmit() {
-    this.openModal();
     for (
       let index = 0;
       index < this.clienteForm.value.motores.length;
@@ -141,12 +151,12 @@ export class RectificadoComponent {
     try {
       this.rectificadosService.addRectificado(body).subscribe({
         next: () => {
+          this.closeModal(false);
           this.clienteForm.reset();
-          this.closeModal();
           this.getRectificadosList();
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   get motores() {
@@ -173,7 +183,7 @@ export class RectificadoComponent {
           this.getRectificadosList();
         },
       });
-    } catch (error) {}
+    } catch (error) { }
   }
 
   onEdit(datos: any): void {
@@ -195,10 +205,29 @@ export class RectificadoComponent {
     });
 
     this.editForm.patchValue({
-      cliente: this.clientes.find((c) => c.id === datos.cliente.id),
-      operario: this.operarios.find((c) => c.id === datos.operario.id),
+      cliente: this.clientes.find((c) => c.dni === datos.cliente.dni),
+      operario: this.operarios.find((c) => c.dni === datos.operario.dni),
       paraEnvio: datos.paraEnvio,
       estado: this.estados.find((c) => c.id === datos.estado.id),
     });
+  }
+
+  onModify() {
+    var body = {
+      ClienteId: this.editForm.value.cliente.dni,
+      OperarioId: this.editForm.value.operario.id,
+      EstadoId: this.editForm.value.estado.id,
+      ParaEnvio: this.editForm.value.paraEnvio,
+    };
+    var id = this.selectedRectificado.id.toString();
+    try {
+      this.rectificadosService.editRectificado(id, body).subscribe({
+        next: () => {
+          this.closeModal(true);
+          this.editForm.reset();
+          this.getRectificadosList();
+        },
+      });
+    } catch (error) { }
   }
 }

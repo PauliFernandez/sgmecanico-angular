@@ -9,7 +9,7 @@ import { of } from 'rxjs/internal/observable/of';
   providedIn: 'root',
 })
 export class RectificadosService {
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService) { }
 
   // Rectificados
   getAllRectificados(): Observable<Rectificado[]> {
@@ -22,6 +22,14 @@ export class RectificadosService {
   }
   addRectificado(body: any): Observable<any> {
     return this.apiService.add(body).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return of();
+      })
+    );
+  }
+  editRectificado(id: string, body: any): Observable<any> {
+    return this.apiService.put(id, body).pipe(
       catchError((error) => {
         console.error('Error:', error);
         return of();

@@ -15,6 +15,9 @@ export class ApiService {
   add(body: any): Observable<Rectificado> {
     return this.httpService.post('Rectificados', body);
   }
+  put(id: string, body: any): Observable<void> {
+    return this.httpService.put(`Rectificados/${id}`, body);
+  }
   delete(id: any): Observable<any> {
     return this.httpService.delete(`Rectificados/${id}`);
   }
