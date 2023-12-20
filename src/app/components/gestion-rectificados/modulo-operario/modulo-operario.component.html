@@ -21,22 +21,22 @@
         <td>{{ operario.dni }}</td>
         <td>{{ operario.fecha | date : "yyyy-MM-dd" }}</td>
         <td>
-          <div class="col-md-3">
-            <button
-              class="btn btn-outline-warning"
-              (click)="editOperario(operario)"
-            >
-              <i class="fa fa-wrench" aria-hidden="true"></i>
-            </button>
-          </div>
-          <div class="col-md-3">
-            <button
-              class="btn btn-outline-danger ml-3"
-              (click)="deleteOperario(operario.id)"
-            >
-              <i class="fa fa-trash" aria-hidden="true"></i>
-            </button>
-          </div>
+          <button
+            class="btn btn-outline-warning"
+            data-toggle="modal"
+            data-target="#addOperarioModal"
+            (click)="selectedOperario(operario)"
+          >
+            <i class="fa fa-pencil" aria-hidden="true"></i>
+          </button>
+          <button
+            class="btn btn-outline-danger ml-3"
+            data-toggle="modal"
+            data-target="#deleteOperarioModal"
+            (click)="deleteOperario(operario.id)"
+          >
+            <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
         </td>
       </tr>
     </tbody>
@@ -151,6 +151,52 @@
           (click)="onSubmit()"
         >
           Confimar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirm deletion dialog modal -->
+<div
+  #deleteOperarioModal
+  id="deleteOperarioModal"
+  class="modal fade"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar operario</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Esta operación eliminará el operario seleccionado. ¿Desea continuar?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="onConfirmCancelClick()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="onConfirmDeleteClick()"
+        >
+          Continuar
         </button>
       </div>
     </div>

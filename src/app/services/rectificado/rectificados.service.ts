@@ -6,11 +6,10 @@ import { catchError, map } from 'rxjs/operators';
 import { of } from 'rxjs/internal/observable/of';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RectificadosService {
-
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   // Rectificados
   getAllRectificados(): Observable<Rectificado[]> {
@@ -66,6 +65,14 @@ export class RectificadosService {
   }
   addOperario(body: any): Observable<any> {
     return this.apiService.addOperarios(body).pipe(
+      catchError((error) => {
+        console.error('Error:', error);
+        return of();
+      })
+    );
+  }
+  editOperario(id: string, body: any): Observable<any> {
+    return this.apiService.editOperarios(id, body).pipe(
       catchError((error) => {
         console.error('Error:', error);
         return of();

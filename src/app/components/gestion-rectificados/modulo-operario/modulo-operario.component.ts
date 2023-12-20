@@ -16,7 +16,8 @@ export class ModuloOperarioComponent {
   operarios: any[] = [];
   operarioForm!: FormGroup;
   @ViewChild('addOperarioModal') addOperarioModal!: ElementRef;
-  isEditing: boolean = false;
+  editOperarioId: string = '';
+  deleteOperarioId: string = '';
 
   constructor(
     private rectificadosService: RectificadosService,
@@ -44,12 +45,12 @@ export class ModuloOperarioComponent {
 
   // Patch values of selected operario
   selectedOperario(operario: any) {
-    this.isEditing = true;
+    this.editOperarioId = operario.id;
     this.operarioForm.patchValue({
       nombre: operario.nombre,
       apellido: operario.apellido,
       dni: operario.dni,
-      fechaIngreso: operario.fecha,
+      fechaIngreso: this.formatDate(operario.fecha),
     });
   }
 
@@ -65,17 +66,24 @@ export class ModuloOperarioComponent {
     } catch (error) {}
   }
 
-  deleteOperario(id: number) {
+  deleteOperario(id: string) {
+    this.deleteOperarioId = id;
+  }
+
+  onConfirmDeleteClick() {
     try {
-      this.rectificadosService.deleteOperario(id).subscribe({
-        next: (response) => {
+      this.rectificadosService.deleteOperario(this.deleteOperarioId).subscribe({
+        next: () => {
           this.getOperariosList();
         },
-        error: (error) => {
-          console.log(error);
-        },
       });
-    } catch (error) {}
+    } finally {
+      this.deleteOperarioId = '';
+    }
+  }
+
+  onConfirmCancelClick() {
+    this.deleteOperarioId = '';
   }
 
   getOperariosList() {
@@ -90,14 +98,15 @@ export class ModuloOperarioComponent {
 
   onSubmit() {
     var body = {
+      Id: this.editOperarioId,
       Nombre: this.operarioForm.value.nombre,
       Apellido: this.operarioForm.value.apellido,
       Dni: this.operarioForm.value.dni,
       Fecha: this.operarioForm.value.fechaIngreso,
     };
-    if (this.isEditing) {
-      this.isEditing = false;
+    if (this.editOperarioId) {
       this.editOperario(body);
+      this.editOperarioId = '';
     } else {
       this.addOperario(body);
     }
@@ -105,16 +114,15 @@ export class ModuloOperarioComponent {
 
   editOperario(body: any) {
     try {
-      this.rectificadosService.addRectificado(body).subscribe({
-        next: () => {
-          this.operarioForm.reset();
-          this.closeModal();
-          this.getOperariosList();
-        },
-        error: (error) => {
-          console.log(error);
-        },
-      });
+      this.rectificadosService
+        .editOperario(this.editOperarioId, body)
+        .subscribe({
+          next: () => {
+            this.operarioForm.reset();
+            this.closeModal();
+            this.getOperariosList();
+          },
+        });
     } catch (error) {}
   }
 
@@ -128,9 +136,15 @@ export class ModuloOperarioComponent {
     if (modalBackdrop && modalBackdrop.parentNode) {
       modalBackdrop.parentNode.removeChild(modalBackdrop);
     }
+  }
 
-    // para resetear el scroll
-    // document.body.classList.remove('modal-open');
-    // document.body.style.paddingRight = '';
+  private formatDate(date: string) {
+    const d = new Date(date);
+    let month = '' + (d.getMonth() + 1);
+    let day = '' + d.getDate();
+    const year = d.getFullYear();
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+    return [year, month, day].join('-');
   }
 }
