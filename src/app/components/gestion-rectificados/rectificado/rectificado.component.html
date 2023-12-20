@@ -32,7 +32,7 @@
         <td>
           <div *ngFor="let motor of datos.motores; let j = index">
             {{ motor.marca }}, {{ motor.modelo }}, ({{
-            motor.fabricacion | date : "yyyy"
+              motor.fabricacion | date : "yyyy"
             }})
           </div>
         </td>
@@ -40,15 +40,30 @@
         <td>{{ datos.fecha | date : "yyyy" }}</td>
         <td>{{ datos.estado.descripcion }}</td>
         <td style="text-align: center">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1" [checked]="datos.paraEnvio" disabled />
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="exampleCheck1"
+            [checked]="datos.paraEnvio"
+            disabled
+          />
         </td>
 
         <td>
-          <button class="btn btn-outline-success" data-toggle="modal" data-target="#editRectificadoModal"
-            (click)="onEdit(datos)">
+          <button
+            class="btn btn-outline-success"
+            data-toggle="modal"
+            data-target="#editRectificadoModal"
+            (click)="onEdit(datos)"
+          >
             <i class="fa fa-pencil" aria-hidden="true"></i>
           </button>
-          <button class="btn btn-outline-danger ml-3" (click)="onDelete(datos.id)">
+          <button
+            class="btn btn-outline-danger ml-3"
+            data-toggle="modal"
+            data-target="#deleteRectificadoModal"
+            (click)="onDelete(datos.id)"
+          >
             <i class="fa fa-trash" aria-hidden="true"></i>
           </button>
         </td>
@@ -57,18 +72,35 @@
   </table>
 </div>
 <div class="row justify-content-end">
-  <button class="btn btn-lg btn-default" data-toggle="modal" data-target="#addRectificadoModal" data-whatever="@mdo">
+  <button
+    class="btn btn-lg btn-default"
+    data-toggle="modal"
+    data-target="#addRectificadoModal"
+    data-whatever="@mdo"
+  >
     <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
   </button>
 </div>
 <!-- Add modal -->
-<div class="modal fade" id="addRectificadoModal" #addRectificadoModal tabindex="-1" role="dialog"
-  aria-labelledby="modalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="addRectificadoModal"
+  #addRectificadoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalLabel">Agregar rectificado</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -84,12 +116,21 @@
             </select>
           </div>
           <div class="form-check mt-3 mb-3">
-            <input type="checkbox" class="form-check-input" id="paraEnvio" formControlName="paraEnvio" />
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="paraEnvio"
+              formControlName="paraEnvio"
+            />
             <label class="form-check-label" for="paraEnvio">Para envio</label>
           </div>
           <div class="form-group">
             <label for="operario">Operario</label>
-            <select class="form-control" id="operario" formControlName="operario">
+            <select
+              class="form-control"
+              id="operario"
+              formControlName="operario"
+            >
               <option [ngValue]="null">Seleccionar un operario</option>
               <option *ngFor="let op of operarios" [ngValue]="op">
                 {{ op.nombre }} {{ op.apellido }}
@@ -98,32 +139,72 @@
           </div>
           <div class="form-group">
             <label for="estado">Estado</label>
-            <input type="text" class="form-control" id="estado" value="{{ estados[0]?.descripcion }}" readonly />
+            <input
+              type="text"
+              class="form-control"
+              id="estado"
+              value="{{ estados[0]?.descripcion }}"
+              readonly
+            />
           </div>
-          <div class="form-group" *ngFor="let motor of motores.controls; let i = index" formArrayName="motores">
+          <div
+            class="form-group"
+            *ngFor="let motor of motores.controls; let i = index"
+            formArrayName="motores"
+          >
             <div [formGroupName]="i">
               <label for="nroMotor-{{ i }}">Nro de motor</label>
-              <input id="nroMotor-{{ i }}" formControlName="nroMotor" type="text" class="form-control"
-                placeholder="000203AbdcD..." />
+              <input
+                id="nroMotor-{{ i }}"
+                formControlName="nroMotor"
+                type="text"
+                class="form-control"
+                placeholder="000203AbdcD..."
+              />
 
               <label for="marca-{{ i }}">Marca</label>
-              <input id="marca-{{ i }}" formControlName="marca" type="text" class="form-control" placeholder="marca" />
+              <input
+                id="marca-{{ i }}"
+                formControlName="marca"
+                type="text"
+                class="form-control"
+                placeholder="marca"
+              />
 
               <label for="modelo-{{ i }}">Modelo</label>
-              <input id="modelo-{{ i }}" formControlName="modelo" type="text" class="form-control"
-                placeholder="modelo" />
+              <input
+                id="modelo-{{ i }}"
+                formControlName="modelo"
+                type="text"
+                class="form-control"
+                placeholder="modelo"
+              />
 
               <label for="fabricacion-{{ i }}">Fabricacion</label>
-              <input id="fabricacion-{{ i }}" formControlName="fabricacion" type="date" class="form-control"
-                placeholder="fabricacion" />
+              <input
+                id="fabricacion-{{ i }}"
+                formControlName="fabricacion"
+                type="date"
+                class="form-control"
+                placeholder="fabricacion"
+              />
             </div>
           </div>
           <div class="row justify-content-end">
             <button class="btn btn-lg btn-default">
-              <i class="fa fa-plus fa-1x" aria-hidden="true" (click)="addMotor()"></i>
+              <i
+                class="fa fa-plus fa-1x"
+                aria-hidden="true"
+                (click)="addMotor()"
+              ></i>
             </button>
           </div>
-          <input class="form-control" type="text" placeholder="{{ curDate | date : 'yyyy-MM-dd' }}" readonly />
+          <input
+            class="form-control"
+            type="text"
+            placeholder="{{ curDate | date : 'yyyy-MM-dd' }}"
+            readonly
+          />
         </form>
       </div>
       <div class="modal-footer">
@@ -138,13 +219,25 @@
   </div>
 </div>
 <!-- Edit modal -->
-<div class="modal fade" id="editRectificadoModal" #editRectificadoModal tabindex="-1" role="dialog"
-  aria-labelledby="modalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="editRectificadoModal"
+  #editRectificadoModal
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="modalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="modalLabel">Editar rectificado</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -160,12 +253,21 @@
             </select>
           </div>
           <div class="form-check mt-3 mb-3">
-            <input type="checkbox" class="form-check-input" id="paraEnvio" formControlName="paraEnvio" />
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="paraEnvio"
+              formControlName="paraEnvio"
+            />
             <label class="form-check-label" for="paraEnvio">Para envio</label>
           </div>
           <div class="form-group">
             <label for="operario">Operario</label>
-            <select class="form-control" id="operario" formControlName="operario">
+            <select
+              class="form-control"
+              id="operario"
+              formControlName="operario"
+            >
               <!-- <option [ngValue]="null">Seleccionar un operario</option> -->
               <option *ngFor="let op of operarios" [ngValue]="op">
                 {{ op.nombre }} {{ op.apellido }}
@@ -181,14 +283,21 @@
               </option>
             </select>
           </div>
-          <div *ngFor="let motor of selectedRectificado?.motores; let i = index">
+          <div
+            *ngFor="let motor of selectedRectificado?.motores; let i = index"
+          >
             <label>
               {{ motor?.marca }}, {{ motor?.modelo }}, ({{
-              motor?.fabricacion | date : "yyyy"
+                motor?.fabricacion | date : "yyyy"
               }})
             </label>
           </div>
-          <input class="form-control" type="text" placeholder="{{ curDate | date : 'yyyy-MM-dd' }}" readonly />
+          <input
+            class="form-control"
+            type="text"
+            placeholder="{{ curDate | date : 'yyyy-MM-dd' }}"
+            readonly
+          />
         </form>
       </div>
       <div class="modal-footer">
@@ -197,6 +306,53 @@
         </button>
         <button type="button" class="btn btn-primary" (click)="onModify()">
           Modificar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Confirm deletion dialog modal -->
+<div
+  #deleteRectificadoModal
+  id="deleteRectificadoModal"
+  class="modal fade"
+  tabindex="-1"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminar rectificado</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Esta operación eliminará el rectificado seleccionado. ¿Desea
+          continuar?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="onConfirmCancelClick()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-dismiss="modal"
+          (click)="onConfirmDeleteClick()"
+        >
+          Continuar
         </button>
       </div>
     </div>

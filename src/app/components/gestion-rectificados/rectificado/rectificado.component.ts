@@ -19,15 +19,15 @@ export class RectificadoComponent {
   editForm!: FormGroup;
   curDate = new Date();
   selectedRectificado: any;
+  deleteRectificadoId: number | null = null;
   @ViewChild('addRectificadoModal') addRectificadoModal!: ElementRef;
   @ViewChild('editRectificadoModal') editRectificadoModal!: ElementRef;
-
 
   constructor(
     private rectificadosService: RectificadosService,
     private fb: FormBuilder,
-    private datePipe: DatePipe,
-  ) { }
+    private datePipe: DatePipe
+  ) {}
 
   ngOnInit() {
     this.getRectificadosList();
@@ -36,7 +36,6 @@ export class RectificadoComponent {
     this.getEstadosList();
     this.initForm();
   }
-
 
   closeModal(edits: boolean) {
     let modalElement;
@@ -53,7 +52,6 @@ export class RectificadoComponent {
     if (modalBackdrop && modalBackdrop.parentNode) {
       modalBackdrop.parentNode.removeChild(modalBackdrop);
     }
-
   }
 
   initForm() {
@@ -94,9 +92,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.rectificados = response;
         },
-        error: (error) => { },
+        error: (error) => {},
       });
-    } catch (error) { }
+    } catch (error) {}
   }
   getClientesList() {
     try {
@@ -104,9 +102,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.clientes = response;
         },
-        error: (error) => { },
+        error: (error) => {},
       });
-    } catch (error) { }
+    } catch (error) {}
   }
   getOperariosList() {
     try {
@@ -114,9 +112,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.operarios = response;
         },
-        error: (error) => { },
+        error: (error) => {},
       });
-    } catch (error) { }
+    } catch (error) {}
   }
   getEstadosList() {
     try {
@@ -124,9 +122,9 @@ export class RectificadoComponent {
         next: (response) => {
           this.estados = response;
         },
-        error: (error) => { },
+        error: (error) => {},
       });
-    } catch (error) { }
+    } catch (error) {}
   }
   onSubmit() {
     for (
@@ -156,7 +154,7 @@ export class RectificadoComponent {
           this.getRectificadosList();
         },
       });
-    } catch (error) { }
+    } catch (error) {}
   }
 
   get motores() {
@@ -176,14 +174,26 @@ export class RectificadoComponent {
     }
   }
 
-  onDelete(id: number) {
+  onConfirmDeleteClick() {
     try {
-      this.rectificadosService.deleteRectificado(id).subscribe({
-        next: () => {
-          this.getRectificadosList();
-        },
-      });
-    } catch (error) { }
+      this.rectificadosService
+        .deleteRectificado(this.deleteRectificadoId)
+        .subscribe({
+          next: () => {
+            this.getRectificadosList();
+          },
+        });
+    } finally {
+      this.deleteRectificadoId = null;
+    }
+  }
+
+  onConfirmCancelClick() {
+    this.deleteRectificadoId = null;
+  }
+
+  onDelete(id: number) {
+    this.deleteRectificadoId = id;
   }
 
   onEdit(datos: any): void {
@@ -228,6 +238,6 @@ export class RectificadoComponent {
           this.getRectificadosList();
         },
       });
-    } catch (error) { }
+    } catch (error) {}
   }
 }
